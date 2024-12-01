@@ -41,12 +41,16 @@ spring:
     fail-on-missing-locations: false
   datasource:
     #url: 'jdbc:h2:file:./target/database/h2'
-    url: jdbc:h2:mem:test_mem
-    username: sa
-    password: null
-    driverClassName: org.h2.Driver
-    max-active: 15
-
+    # url: jdbc:h2:mem:test_mem
+    # username: sa
+    # password: null
+    # driverClassName: org.h2.Driver
+    url: 'jdbc:postgresql://hapi-fhir-postgres:5432/hapi'
+    username: admin 
+    password: admin
+    driverClassName: org.postgresql.Driver
+    # max-active: 15
+    
     # database connection pool size
     hikari:
       maximum-pool-size: 10
@@ -58,7 +62,7 @@ spring:
       #Hibernate dialect is automatically detected except Postgres and H2.
       #If using H2, then supply the value of ca.uhn.fhir.jpa.model.dialect.HapiFhirH2Dialect
       #If using postgres, then supply the value of ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgresDialect
-      hibernate.dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirH2Dialect
+      hibernate.dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
   #      hibernate.hbm2ddl.auto: update
   #      hibernate.jdbc.batch_size: 20
   #      hibernate.cache.use_query_cache: false
@@ -79,6 +83,12 @@ spring:
 #      hibernate.search.backend.analysis.configurer: ca.uhn.fhir.jpa.search.HapiHSearchAnalysisConfigurers$HapiElasticAnalysisConfigurer
 hapi:
   fhir:
+    implementationguides:
+      twcore:
+        name: tw.gov.mohw.twcore
+        version: 0.3.1
+        packageUrl: "https://twcore.mohw.gov.tw/ig/twcore/0.3.1/package.tgz"
+    install_transitive_ig_dependencies: true
     ### This flag when enabled to true, will avail evaluate measure operations from CR Module.
     ### Flag is false by default, can be passed as command line argument to override.
     cr:
@@ -154,8 +164,6 @@ hapi:
     #    defer_indexing_for_codesystems_of_size: 101
     ### Flag is true by default. This flag filters resources during package installation, allowing only those resources with a valid status (e.g. active) to be installed.
     #    validate_resource_status_for_package_upload: false 
-    #    install_transitive_ig_dependencies: true
-    #implementationguides:
     ###    example from registry (packages.fhir.org)
     #  swiss:
     #    name: swiss.mednet.fhir
@@ -294,9 +302,9 @@ hapi:
         server_address: "http://hapi.fhir.org/baseR4"
         refuse_to_fetch_third_party_urls: false
         fhir_version: R4
-    #    validation:
-    #      requests_enabled: true
-    #      responses_enabled: true
+        validation:
+          requests_enabled: true
+          responses_enabled: false
     #    binary_storage_enabled: true
     inline_resource_storage_below_size: 4000
 #    bulk_export_enabled: true
