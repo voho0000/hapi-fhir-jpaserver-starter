@@ -83,12 +83,22 @@ spring:
 #      hibernate.search.backend.analysis.configurer: ca.uhn.fhir.jpa.search.HapiHSearchAnalysisConfigurers$HapiElasticAnalysisConfigurer
 hapi:
   fhir:
-    implementationguides:
-      twcore:
-        name: tw.gov.mohw.twcore
-        version: 0.3.1
-        packageUrl: "https://twcore.mohw.gov.tw/ig/twcore/0.3.1/package.tgz"
-    install_transitive_ig_dependencies: true
+    # security:
+    #   oauth:
+    #     enabled: true
+    #     server:
+    #       authorize: http://localhost:8090/realms/ehr-fhir-auth/protocol/openid-connect/auth
+    #       token: http://localhost:8090/realms/ehr-fhir-auth/protocol/openid-connect/token
+    #       introspection: http://localhost:8090/realms/ehr-fhir-auth/protocol/openid-connect/token/introspect
+    #     client:
+    #       id: hapi-fhir-uscore-client
+    #       secret: 4vVoJ3dxlGejFHGIG95N5bJDMDPRB05m
+    # implementationguides:
+    #   twcore:
+    #     name: tw.gov.mohw.twcore
+    #     version: 0.3.1
+    #     packageUrl: "https://twcore.mohw.gov.tw/ig/twcore/0.3.1/package.tgz"
+    # install_transitive_ig_dependencies: true
     ### This flag when enabled to true, will avail evaluate measure operations from CR Module.
     ### Flag is false by default, can be passed as command line argument to override.
     cr:
@@ -339,3 +349,12 @@ hapi:
 #  protocol: 'http'
 #  schema_management_strategy: CREATE
 #  username: SomeUsername
+
+keycloak:
+  auth-server-url: http://localhost:8090
+  realm: ehr-fhir-auth
+  resource: hapi-fhir-uscore-client
+  public-client: true
+  credentials:
+    secret: 4vVoJ3dxlGejFHGIG95N5bJDMDPRB05m
+  ssl-required: external
